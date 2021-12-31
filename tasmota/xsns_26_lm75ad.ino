@@ -83,9 +83,8 @@ float LM75ADGetTemp(uint32_t idx)
 
   uint8_t conf = I2cRead8(lm75ad_addresses[idx], LM75_CONF_REGISTER);
   //check the resolution config, make sure it is always 12 bits
-  if (conf & MCP980x_RESOLUTION_MASK != MCP980x_RESOLUTION_MASK) {
-    conf |= MCP980x_RESOLUTION_MASK;
-    I2cWrite8(lm75ad_addresses[idx], LM75_CONF_REGISTER, conf);
+  if ((conf & MCP980x_RESOLUTION_MASK) != MCP980x_RESOLUTION_MASK) {
+    I2cWrite8(lm75ad_addresses[idx], LM75_CONF_REGISTER, MCP980x_RESOLUTION_MASK); //re-enable
   }
 
   if (t & 0x8000) { // we are getting a negative temperature value
